@@ -109,8 +109,6 @@ class _ProfilescreenState extends State<Profilescreen> {
     _postsstream.cancel();
   }
 
-  bool _isloading = true;
-
   late bool ownerIScurrentuser;
 
   @override
@@ -123,7 +121,7 @@ class _ProfilescreenState extends State<Profilescreen> {
     String currentuserid = authprov.getdattttta.uid;
     return _isloadinguser
         ? Center(
-            child: CircularProgressIndicator(color: Colors.blue),
+            child: CircularProgressIndicator(color: Colors.green),
           )
         : Scaffold(
             appBar: widget.isfromsearsh ? AppBar() : null,
@@ -137,6 +135,7 @@ class _ProfilescreenState extends State<Profilescreen> {
                       Icons.edit,
                       size: 35,
                     ),
+                    backgroundColor: Colors.blue[400],
                   ),
             body: Container(
               height: media.height,

@@ -10,6 +10,7 @@ import 'package:flutter_complete_guide/screens/comments_bottomSheet_screen.dart'
 import 'package:flutter_complete_guide/screens/bottom_nav_screens.dart/profile_screen.dart';
 import 'package:flutter_complete_guide/screens/image_preview_screen.dart';
 import 'package:flutter_complete_guide/screens/searsh_screen.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -122,7 +123,8 @@ class _PostvisualwidgetState extends State<Postvisualwidget> {
                                 height: 6,
                               ),
                               Text(
-                                widget.post.timeDate,
+                                DateFormat.yMMMMd()
+                                    .format(widget.post.timeDate.toDate()),
                                 style:
                                     TextStyle(fontSize: 13, color: Colors.grey),
                               ),

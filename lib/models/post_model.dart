@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 
 class Postinfo {
   String uid;
@@ -7,7 +6,7 @@ class Postinfo {
   String imageURL;
   String postText;
   String? postImage;
-  String timeDate;
+  Timestamp timeDate;
   List likes;
   List commentsnum;
   String postid;

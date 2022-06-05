@@ -50,8 +50,6 @@ class _SharePreviewState extends State<SharePreview> {
 
   @override
   Widget build(BuildContext context) {
-    final _media = MediaQuery.of(context).size;
-
     if (_isloadinginit == true) {
       return Center(
         child: CircularProgressIndicator(
@@ -75,9 +73,11 @@ class _SharePreviewState extends State<SharePreview> {
               if (snap.connectionState == ConnectionState.waiting ||
                   snap.connectionState == ConnectionState.none ||
                   snap.connectionState == ConnectionState.done) {
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.green,
+                return Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.green,
+                    ),
                   ),
                 );
               } else {

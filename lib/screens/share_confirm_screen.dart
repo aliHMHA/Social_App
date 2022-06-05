@@ -115,20 +115,25 @@ class ShareConfirmScreenState extends State<ShareConfirmScreen> {
                         primary: Colors.amber,
                       ),
                       onPressed: () async {
-                        setState(() {
-                          _isloading = true;
-                        });
-                        await postprov.share(
-                            reciverid: widget.tosendTo.uid,
-                            postid: widget.postid,
-                            message: _controller.text,
-                            sendername: _currentusermodel.name,
-                            senderimageurl: _currentusermodel.imageURL,
-                            context: context);
-                        setState(() {
-                          _isloading = false;
-                        });
-                        Navigator.pop(context);
+                        if (_controller.text.isNotEmpty) {
+                          setState(() {
+                            _isloading = true;
+                          });
+                          await postprov.share(
+                              reciverid: widget.tosendTo.uid,
+                              postid: widget.postid,
+                              message: _controller.text,
+                              sendername: _currentusermodel.name,
+                              senderimageurl: _currentusermodel.imageURL,
+                              context: context);
+                          setState(() {
+                            _isloading = false;
+                          });
+                          Navigator.pop(context);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('pleas say someting about it ')));
+                        }
                       },
                       child: _isloading
                           ? CircularProgressIndicator(

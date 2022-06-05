@@ -7,55 +7,6 @@ import 'package:flutter_complete_guide/models/mesage_model.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ChatAndUploadController {
-  // List<SocialUser> _allUsers = [];
-  // SocialUser? _userdata;
-  // List<MessageModel> _messagelist = [];
-
-  // List<SocialUser> get alluserslist {
-  //   List<SocialUser> hh = _allUsers;
-  //   return hh;
-  // }
-
-  // List<MessageModel> get messagelist {
-  //   List<MessageModel> ggtt = _messagelist;
-  //   return ggtt;
-  // }
-
-  // set currentuser(SocialUser gggg) {
-  //   _userdata = gggg;
-  // }
-
-  // Future<void> getAllUsers() {
-  //   return FirebaseFirestore.instance.collection('users').get().then((value) {
-  //     _allUsers.clear();
-  //     value.docs.forEach((element) {
-  //       SocialUser ff = SocialUser.fromJeson(element.data());
-  //       if (ff.uid != _userdata!.uid) {
-  //         _allUsers.add(ff);
-  //       }
-  //     });
-  //   });
-  // }
-
-  // void getallmessages(String chatterid) {
-  //   _messagelist.clear();
-  //   FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(_userdata!.uid)
-  //       .collection('chats')
-  //       .doc(chatterid)
-  //       .collection('messages')
-  //       .orderBy('timeDate')
-  //       .snapshots()
-  //       .listen((event) {
-  //     _messagelist = [];
-  //     event.docs.forEach((element) {
-  //       _messagelist.add(MessageModel.fromJeson(element.data()));
-  //     });
-  //     notifyListeners();
-  //   });
-  // }
-
   void sendamesageto(MessageModel message) async {
     List<MessageModel> _messagelist = [];
     CollectionReference fff = FirebaseFirestore.instance.collection('users');
@@ -106,7 +57,7 @@ class ChatAndUploadController {
           'likes': FieldValue.arrayRemove([uid])
         });
         await _firestore.collection('users').doc(commentownerid).update({
-          'likes': FieldValue.arrayRemove([uid])
+          'likes': FieldValue.arrayRemove([uid + commentid])
         });
       } else {
         await _firestore
@@ -118,7 +69,7 @@ class ChatAndUploadController {
           'likes': FieldValue.arrayUnion([uid])
         });
         await _firestore.collection('users').doc(commentownerid).update({
-          'likes': FieldValue.arrayUnion([uid])
+          'likes': FieldValue.arrayUnion([uid + commentid])
         });
       }
     } catch (e) {
@@ -171,7 +122,7 @@ class ChatAndUploadController {
               title: const Text('Select image'),
               content: Container(
                 padding: const EdgeInsets.only(top: 10),
-                width: media.width * .5,
+                width: media.width * .4,
                 height: media.height * .25,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,

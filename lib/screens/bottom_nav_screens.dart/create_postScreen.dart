@@ -49,9 +49,20 @@ class _PostScreenState extends State<CreatePostScreen> {
                         padding: EdgeInsets.all(7),
                         child: Row(
                           children: [
-                            CircleAvatar(
-                              radius: 30,
-                              backgroundImage: NetworkImage(data.imageURL),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(30),
+                              child: CircleAvatar(
+                                child: SizedBox(
+                                  width: 60,
+                                  height: 60,
+                                  child: FadeInImage(
+                                      fit: BoxFit.cover,
+                                      placeholder: const AssetImage(
+                                          'assets/images/placeHolder1.jpg'),
+                                      image: NetworkImage(data.imageURL)),
+                                ),
+                                radius: 30,
+                              ),
                             ),
                             SizedBox(
                               width: 15,
@@ -88,6 +99,7 @@ class _PostScreenState extends State<CreatePostScreen> {
                             Spacer(),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
+                                  fixedSize: Size(85, 45),
                                   primary: Colors.amber),
                               child: _isloading
                                   ? CircularProgressIndicator(
@@ -95,7 +107,7 @@ class _PostScreenState extends State<CreatePostScreen> {
                                     )
                                   : Text(
                                       'POST',
-                                      style: TextStyle(fontSize: 15),
+                                      style: TextStyle(fontSize: 17),
                                     ),
                               onPressed: () async {
                                 setState(() {
@@ -108,14 +120,19 @@ class _PostScreenState extends State<CreatePostScreen> {
                                       textColor: Colors.black);
                                 } else if (_imagetoupload == null) {
                                   await postprov.createpost(
-                                      postcontroller.text, null);
+                                      context: context,
+                                      postimage: null,
+                                      posttext: postcontroller.text,
+                                      user: data);
                                 } else {
                                   await postprov.creatpostwithimage(
-                                      postcontroller.text,
-                                      _imagetoupload!,
-                                      authprov.getdattttta.uid);
+                                      imagetoupload: _imagetoupload!,
+                                      posttexttt: postcontroller.text,
+                                      user: data,
+                                      context: context);
                                 }
                                 setState(() {
+                                  _imagetoupload = null;
                                   _isloading = false;
                                 });
                               },
@@ -129,6 +146,7 @@ class _PostScreenState extends State<CreatePostScreen> {
                       padding: EdgeInsets.only(left: 7),
                       child: TextFormField(
                         style: TextStyle(fontSize: 22),
+                        textInputAction: TextInputAction.done,
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: 'say some thing',
@@ -169,7 +187,7 @@ class _PostScreenState extends State<CreatePostScreen> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       // side: BorderSide(width: 1, color: Colors.green),
-                      primary: Colors.blue,
+                      primary: Colors.blue[400],
                       fixedSize: Size(media.width - 20, 50)),
                   onPressed: () async {
                     _imagetoupload = await ChatAndUploadController()

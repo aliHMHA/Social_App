@@ -1,9 +1,9 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/screens/widgets/text_input_field.dart';
 import 'package:flutter_complete_guide/providers/auth_provider.dart';
 import 'package:flutter_complete_guide/providers/chatANDuploadController.dart';
-import 'package:flutter_complete_guide/screens/login_creen.dart';
 import 'package:provider/provider.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -68,6 +68,10 @@ class _SignupScreenState extends State<SignupScreen> {
         setState(() {
           _isloading = false;
         });
+
+        if (FirebaseAuth.instance.currentUser != null) {
+          Navigator.of(context).pop();
+        }
       }
     }
 
@@ -178,7 +182,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ispassword: false,
                         texttype: TextInputType.emailAddress),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 15),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 32),
                     child: Textfieldinput(
@@ -187,7 +191,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ispassword: false,
                         texttype: TextInputType.text),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 15),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 32),
                     child: Textfieldinput(
@@ -196,7 +200,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ispassword: true,
                         texttype: TextInputType.emailAddress),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 15),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 32),
                     child: Textfieldinput(
@@ -205,7 +209,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ispassword: false,
                         texttype: TextInputType.text),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 15),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 32),
                     child: Textfieldinput(
@@ -214,6 +218,9 @@ class _SignupScreenState extends State<SignupScreen> {
                         ispassword: false,
                         texttype: TextInputType.text),
                   ),
+                  const SizedBox(
+                    height: 15,
+                  )
                 ],
               ),
             ),
@@ -222,13 +229,11 @@ class _SignupScreenState extends State<SignupScreen> {
             margin: const EdgeInsets.symmetric(horizontal: 32),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
+                  primary: Colors.blue[400],
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10))),
               onPressed: adduser,
               child: Container(
-                // decoration: BoxDecoration(
-                //     color: Colors.blue,
-                //     borderRadius: const BorderRadius.all(Radius.circular(10))),
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 width: double.infinity,
@@ -248,7 +253,7 @@ class _SignupScreenState extends State<SignupScreen> {
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 8),
-                child: const Text('Dont have an account'),
+                child: const Text('Don\'t have an account'),
               ),
               const SizedBox(width: 3),
               GestureDetector(
@@ -261,8 +266,11 @@ class _SignupScreenState extends State<SignupScreen> {
                         fontWeight: FontWeight.bold, color: Colors.blue),
                   ),
                 ),
-              )
+              ),
             ],
+          ),
+          SizedBox(
+            height: 15,
           )
         ],
       ),

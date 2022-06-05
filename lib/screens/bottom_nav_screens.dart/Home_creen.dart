@@ -38,12 +38,16 @@ class _HomeState extends State<Home> {
                         MaterialPageRoute(builder: (ctx) => SharePreview()));
                   },
                   iconSize: 30),
-              CircleAvatar(
-                backgroundColor: Colors.red,
-                radius: 9,
-                child: Text(
-                  autprov.getdattttta.sharesrecived!.length.toString(),
-                  style: TextStyle(fontSize: 12),
+              Positioned(
+                left: 5,
+                top: 5,
+                child: CircleAvatar(
+                  backgroundColor: Colors.red,
+                  radius: 8,
+                  child: Text(
+                    autprov.getdattttta.sharesrecived!.length.toString(),
+                    style: TextStyle(fontSize: 12),
+                  ),
                 ),
               )
             ],
@@ -62,7 +66,10 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+          stream: FirebaseFirestore.instance
+              .collection('posts')
+              .orderBy('timeDate', descending: true)
+              .snapshots(),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snaps) {
             if (snaps.connectionState == ConnectionState.active) {

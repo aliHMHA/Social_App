@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/screens/widgets/text_input_field.dart';
 import 'package:flutter_complete_guide/providers/auth_provider.dart';
 import 'package:flutter_complete_guide/providers/chatANDuploadController.dart';
-import 'package:flutter_complete_guide/screens/chat_to_Afriend_screen.dart';
 import 'package:flutter_complete_guide/screens/signup_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -84,6 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
           const SizedBox(height: 24),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
+                primary: Colors.blue[400],
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10))),
             onPressed: loginuser,
@@ -113,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 8),
-                child: const Text('Dont have an account'),
+                child: const Text('Don\'t have an account'),
               ),
               const SizedBox(width: 3),
               GestureDetector(
@@ -128,6 +128,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               )
             ],
+          ),
+          SizedBox(
+            height: 20,
           )
         ],
       ),

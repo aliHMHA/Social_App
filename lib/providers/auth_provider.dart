@@ -10,40 +10,18 @@ class Authprovider with ChangeNotifier {
 
   SocialUser get getdattttta => _userr!;
 
-  Future<void> getdata() async {
-    try {
-      final String uid = FirebaseAuth.instance.currentUser!.uid;
-
-      var userinfo =
-          await FirebaseFirestore.instance.collection('users').doc(uid).get();
-      SocialUser gg = SocialUser.fromsnap(userinfo);
-      _userr = gg;
-      notifyListeners();
-    } catch (error) {
-      throw error;
-    }
+  set socialuserset(SocialUser value) {
+    _userr = value;
   }
 
-  // Future<void> condition() async {
-  //   try {
-  //     final prefs = await SharedPreferences.getInstance();
-  //     if (prefs.containsKey('userdata')) {
-  //       _userData =
-  //           json.decode(prefs.getString('userdata')) as Map<String, Object>;
-  //       print(_userData['userid']);
-  //       await FirebaseAuth.instance
-  //           .signInWithEmailAndPassword(
-  //               email: _userData['email'], password: _userData['password'])
-  //           .then((value) {
-  //         _token = value.user.getIdToken();
-  //         notifyListeners();
-  //       });
-  //     } else {
-  //       return;
-  //     }
-  //   } catch (error) {
-  //     throw (error);
-  //   }
+  // Future<String> getdata() async {
+  //   final String uid = FirebaseAuth.instance.currentUser!.uid;
+
+  //   var userinfo =
+  //       await FirebaseFirestore.instance.collection('users').doc(uid).get();
+  //   SocialUser gg = SocialUser.fromsnap(userinfo);
+  //   _userr = gg;
+  //   return gg.name;
   // }
 
   Future<void> regester(
@@ -56,58 +34,52 @@ class Authprovider with ChangeNotifier {
       required String bio,
       required File coverimage}) async {
     try {
-      String? _profileurl;
-      String? _coverurl;
-      await FirebaseStorage.instance
-          .ref()
-          .child("users/${Uri.file(profilepic.path).pathSegments.last}")
-          .putFile(profilepic)
-          .then((value) {
-        value.ref.getDownloadURL().then((value) {
-          _profileurl = value;
-        });
-      });
-      await FirebaseStorage.instance
-          .ref()
-          .child("users/${Uri.file(profilepic.path).pathSegments.last}")
-          .putFile(coverimage)
-          .then((value) {
-        value.ref.getDownloadURL().then((value) {
-          _coverurl = value;
-        });
-      });
+      final fireauth = FirebaseAuth.instance;
 
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
+      String _profileurl;
+      String _coverurl;
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child("users/${Uri.file(profilepic.path).pathSegments.last}");
+      UploadTask upload = ref.putFile(profilepic);
+
+      TaskSnapshot task = await upload;
+
+      _profileurl = await task.ref.getDownloadURL();
+      final refcover = FirebaseStorage.instance
+          .ref()
+          .child("users/${Uri.file(coverimage.path).pathSegments.last}");
+      UploadTask uploadcover = refcover.putFile(coverimage);
+
+      TaskSnapshot taskcover = await uploadcover;
+
+      _coverurl = await taskcover.ref.getDownloadURL();
+
+      final cred = await fireauth.createUserWithEmailAndPassword(
         email: email,
         password: password,
-      )
-          .then((value) {
-        SocialUser model = SocialUser(
-          followers: [],
-          following: [],
-          comments: [],
-          posts: [],
-          likes: [],
-          email: email,
-          uid: value.user!.uid,
-          imageURL: _profileurl!,
-          coverURL: _coverurl!,
-          bio: bio,
-          phone: phone,
-          name: name,
-        );
+      );
+      SocialUser model = SocialUser(
+        sharesrecived: [],
+        followers: [],
+        following: [],
+        comments: [],
+        posts: [],
+        likes: [],
+        email: email,
+        uid: cred.user!.uid,
+        imageURL: _profileurl,
+        coverURL: _coverurl,
+        bio: bio,
+        phone: phone,
+        name: name,
+      );
 
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(model.uid)
-            .set(model.tomap());
-      });
-
-      // final prefs = await SharedPreferences.getInstance();
-      // prefs.setString('userdata', jsonEncode(_userData));
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(model.uid)
+          .set(model.tomap());
     } catch (error) {
-      print(error.toString());
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(error.toString())));
     }
@@ -120,12 +92,62 @@ class Authprovider with ChangeNotifier {
         email: email,
         password: password,
       );
-
-      // var prefs = await SharedPreferences.getInstance();
-      // prefs.setString('userdata', jsonEncode(_userData));
     } catch (error) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(error.toString())));
     }
   }
 }
+//  try {
+//       String? _profileurl;
+//       String? _coverurl;
+//       await FirebaseStorage.instance
+//           .ref()
+//           .child("users/${Uri.file(profilepic.path).pathSegments.last}")
+//           .putFile(profilepic)
+//           .then((value) {
+//         value.ref.getDownloadURL().then((value) {
+//           _profileurl = value;
+//         });
+//       });
+//       await FirebaseStorage.instance
+//           .ref()
+//           .child("users/${Uri.file(profilepic.path).pathSegments.last}")
+//           .putFile(coverimage)
+//           .then((value) {
+//         value.ref.getDownloadURL().then((value) {
+//           _coverurl = value;
+//         });
+//       });
+
+//       await FirebaseAuth.instance
+//           .createUserWithEmailAndPassword(
+//         email: email,
+//         password: password,
+//       )
+//           .then((value) {
+//         SocialUser model = SocialUser(
+//           followers: [],
+//           following: [],
+//           comments: [],
+//           posts: [],
+//           likes: [],
+//           email: email,
+//           uid: value.user!.uid,
+//           imageURL: _profileurl!,
+//           coverURL: _coverurl!,
+//           bio: bio,
+//           phone: phone,
+//           name: name,
+//         );
+
+//         FirebaseFirestore.instance
+//             .collection('users')
+//             .doc(model.uid)
+//             .set(model.tomap());
+//       });
+//     } catch (error) {
+//       print(error.toString());
+//       ScaffoldMessenger.of(context)
+//           .showSnackBar(SnackBar(content: Text(error.toString())));
+//     }

@@ -12,83 +12,49 @@ import 'package:uuid/uuid.dart';
 import '../models/share_model.dart';
 
 class PostProvider with ChangeNotifier {
-  late String _postimageUrl;
-
-  // bool isloading;
-  SocialUser? _userdata;
-  set userinfo(SocialUser value) {
-    _userdata = value;
-  }
-
-  List<Postinfo> _postsinfolist = [];
-
-  List<String> _postidlist = [];
-
-  List<int> _likes = [];
-  List<int> _commentnumberlist = [];
-
-  List<int> get likeslist {
-    List<int> comment = _likes;
-    return comment;
-  }
-
-  List<int> get comentnumberlist {
-    List<int> comment = _commentnumberlist;
-    return comment;
-  }
-
-  List _comments = [];
-
-  List<String> get postidlist {
-    List<String> dsadasdasd;
-    dsadasdasd = _postidlist;
-    return dsadasdasd;
-  }
-
-  List get comments {
-    List dd = _comments;
-    return dd;
-  }
-
-  List<Postinfo> get postlistsss {
-    List<Postinfo> dsdgr;
-    dsdgr = _postsinfolist;
-    return dsdgr;
-  }
-
   Future<void> creatpostwithimage(
-      String posttexttt, File imagetoupload, String userid) async {
+      {required String posttexttt,
+      required File imagetoupload,
+      required SocialUser user,
+      required BuildContext context}) async {
     final imageid = Uuid().v1();
     await FirebaseStorage.instance
         .ref()
         .child("posts")
-        .child(userid)
+        .child(user.uid)
         .child(imageid)
         .putFile(imagetoupload)
         .then((value) {
       value.ref.getDownloadURL().then(
         (value) {
-          _postimageUrl = value;
           createpost(
-            posttexttt,
-            _postimageUrl,
-          );
+              posttext: posttexttt,
+              context: context,
+              postimage: value,
+              user: user);
         },
-      ).catchError((error) {});
-    }).catchError((error) {});
+      );
+    }).catchError((error) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(error.toString())));
+    });
   }
 
-  Future<void> createpost(String posttext, String? postimage) async {
+  Future<void> createpost(
+      {required String posttext,
+      required String? postimage,
+      required SocialUser user,
+      required BuildContext context}) async {
     try {
       final postid = const Uuid().v1();
 
       Postinfo model = Postinfo(
           commentsnum: [],
-          uid: _userdata!.uid,
-          imageURL: _userdata!.imageURL,
-          name: _userdata!.name,
+          uid: user.uid,
+          imageURL: user.imageURL,
+          name: user.name,
           postText: posttext,
-          timeDate: DateFormat.yMMMMd().format(DateTime.now()),
+          timeDate: Timestamp.now(),
           postImage: postimage,
           likes: [],
           postid: postid);
@@ -100,11 +66,15 @@ class PostProvider with ChangeNotifier {
             model.tomap(),
           )
           .catchError((error) {});
-      await _firestore.collection('users').doc(_userdata!.uid).update({
+      await _firestore.collection('users').doc(user.uid).update({
         'posts': FieldValue.arrayUnion([postid])
       });
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Post puplished')));
     } catch (err) {
-      print(err);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(err.toString())));
     }
   }
 
@@ -167,7 +137,7 @@ class PostProvider with ChangeNotifier {
           'likes': FieldValue.arrayRemove([userid])
         });
         await _firestore.collection('users').doc(postownerid).update({
-          'likes': FieldValue.arrayRemove([userid])
+          'likes': FieldValue.arrayRemove([userid + postid])
         });
       } else {
         await FirebaseFirestore.instance
@@ -177,7 +147,7 @@ class PostProvider with ChangeNotifier {
           'likes': FieldValue.arrayUnion([userid])
         });
         await _firestore.collection('users').doc(postownerid).update({
-          'likes': FieldValue.arrayUnion([userid])
+          'likes': FieldValue.arrayUnion([userid + postid])
         });
       }
     } catch (err) {
@@ -197,7 +167,7 @@ class PostProvider with ChangeNotifier {
       await ref.update({
         'commentsnum': FieldValue.arrayUnion([comment.commentid])
       });
-      await _firestore.collection('users').doc(_userdata!.uid).update({
+      await _firestore.collection('users').doc(comment.useridd).update({
         'comments': FieldValue.arrayUnion([comment.commentid])
       });
     } catch (err) {

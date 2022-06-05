@@ -20,7 +20,7 @@ class _EditeScreenState extends State<EditeScreen> {
 
   String? _Phone;
 
-  String? _Name;
+  String? _name;
 
   // String? _image;
   String? _boi;
@@ -38,8 +38,6 @@ class _EditeScreenState extends State<EditeScreen> {
     final authprov = Provider.of<Authprovider>(context, listen: false);
     final editeprov = Provider.of<EditProvider>(context);
 
-    SocialUser _ooooo = authprov.getdattttta;
-
     final media = MediaQuery.of(context).size;
     SocialUser datta = authprov.getdattttta;
 
@@ -51,7 +49,8 @@ class _EditeScreenState extends State<EditeScreen> {
       } else {
         try {
           _llllll.currentState!.save();
-          await editeprov.edite(_Phone, _Name, _boi);
+          await editeprov.edite(
+              user: datta, bio: _boi, name: _name, context: context);
         } catch (error) {}
       }
     }
@@ -125,6 +124,7 @@ class _EditeScreenState extends State<EditeScreen> {
                                 await ChatAndUploadController()
                                     .showdialogforimagepick(
                                         context: context, media: media);
+                            setState(() {});
                           }, //coverimage
                           child: CircleAvatar(
                             backgroundColor: Colors.white,
@@ -144,6 +144,7 @@ class _EditeScreenState extends State<EditeScreen> {
                                 await ChatAndUploadController()
                                     .showdialogforimagepick(
                                         context: context, media: media);
+                            setState(() {});
                           }, //coverimage //profilepic
                           child: CircleAvatar(
                             backgroundColor: Colors.white,
@@ -167,6 +168,8 @@ class _EditeScreenState extends State<EditeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.blue[400]),
                           onPressed: () {
                             if (_selectedprofileImage == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -179,11 +182,14 @@ class _EditeScreenState extends State<EditeScreen> {
                               });
                               editeprov
                                   .uploadProfilImage(
-                                _selectedprofileImage!,
-                              )
+                                      _selectedprofileImage!, context)
                                   .then((value) {
                                 editeprov
-                                    .edite(_Phone, _Name, _boi)
+                                    .edite(
+                                        user: datta,
+                                        bio: _boi,
+                                        name: _name,
+                                        context: context)
                                     .then((value) {
                                   setState(() {
                                     profilupdateload = false;
@@ -193,7 +199,7 @@ class _EditeScreenState extends State<EditeScreen> {
                             }
                           },
                           child: Text(
-                            'update profle',
+                            'update profle pic',
                             style: TextStyle(fontSize: 20),
                           ),
                         ),
@@ -212,6 +218,8 @@ class _EditeScreenState extends State<EditeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.blue[400]),
                           onPressed: () {
                             if (_selectedCoverImage == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -224,11 +232,14 @@ class _EditeScreenState extends State<EditeScreen> {
                               });
                               editeprov
                                   .uploadCoverImage(
-                                _selectedCoverImage!,
-                              )
+                                      _selectedCoverImage!, context)
                                   .then((value) {
                                 editeprov
-                                    .edite(_Phone, _Name, _boi)
+                                    .edite(
+                                        user: datta,
+                                        bio: _boi,
+                                        name: _name,
+                                        context: context)
                                     .then((value) {
                                   setState(() {
                                     coverupdateload = false;
@@ -276,7 +287,7 @@ class _EditeScreenState extends State<EditeScreen> {
                             return null;
                           },
                           onSaved: (value) {
-                            _Name = value;
+                            _name = value;
                           },
                         ),
                         SizedBox(

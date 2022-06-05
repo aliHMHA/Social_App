@@ -8,31 +8,32 @@ import 'package:flutter_complete_guide/models/user_model.dart';
 class EditProvider with ChangeNotifier {
   String? _profileurl;
   String? _coverUrl;
-  late SocialUser _data;
 
-  set tttrrrrr(SocialUser value) {
-    _data = value;
-  }
-
-  Future<void> edite(String? phone, String? name, String? bio) async {
-    SocialUser modde = SocialUser(
-        email: _data.email,
-        uid: _data.uid,
-        phone: phone ?? _data.phone,
-        bio: bio ?? _data.bio,
-        imageURL: _profileurl ?? _data.imageURL,
-        coverURL: _coverUrl ?? _data.coverURL,
-        name: name ?? _data.name);
-
+  Future<void> edite(
+      {String? phone,
+      String? name,
+      String? bio,
+      required SocialUser user,
+      required BuildContext context}) async {
     try {
       await FirebaseFirestore.instance
           .collection('users')
-          .doc(_data.uid)
-          .update(modde.tomap());
-    } catch (error) {}
+          .doc(user.uid)
+          .update({
+        'imageURL': _profileurl ?? user.imageURL,
+        'coverURL': _coverUrl ?? user.coverURL,
+        'name': name ?? user.name,
+        'phone': phone ?? user.phone,
+        'bio': bio ?? user.bio,
+      });
+    } catch (error) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(error.toString())));
+    }
   }
 
-  Future<void> uploadProfilImage(File imagetoupload) async {
+  Future<void> uploadProfilImage(
+      File imagetoupload, BuildContext context) async {
     try {
       await FirebaseStorage.instance
           .ref()
@@ -44,11 +45,13 @@ class EditProvider with ChangeNotifier {
         });
       }).catchError((error) {});
     } catch (e) {
-      throw (e);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
 
-  Future<void> uploadCoverImage(File imagetoupload) async {
+  Future<void> uploadCoverImage(
+      File imagetoupload, BuildContext context) async {
     try {
       await FirebaseStorage.instance
           .ref()
@@ -60,7 +63,8 @@ class EditProvider with ChangeNotifier {
         }).catchError((error) {});
       }).catchError((error) {});
     } catch (e) {
-      throw (e);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
 }
