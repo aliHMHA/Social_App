@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/models/comment_model.dart';
-import 'package:flutter_complete_guide/providers/auth_provider.dart';
 import 'package:flutter_complete_guide/providers/chatANDuploadController.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 class CommentsWindow extends StatelessWidget {
   final Comment comment;
@@ -14,8 +12,6 @@ class CommentsWindow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateTime puplishdate = comment.timedate.toDate();
-
-    final _auth = Provider.of<Authprovider>(context);
 
     return Container(
       padding: EdgeInsets.all(10),
