@@ -72,13 +72,16 @@ class _ChatToAFriendScreenState extends State<ChatToAFriendScreen> {
     final authprov = Provider.of<Authprovider>(context).getdattttta;
 
     return _isloaging
-        ? Center(
-            child: CircularProgressIndicator(
-              color: Colors.blue,
+        ? Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(
+                color: Colors.green,
+              ),
             ),
           )
         : Scaffold(
             appBar: AppBar(
+              backgroundColor: Colors.grey[50],
               leadingWidth: 40,
               title: Row(
                 children: [
@@ -163,7 +166,9 @@ class _ChatToAFriendScreenState extends State<ChatToAFriendScreen> {
                   ),
                 Container(
                   clipBehavior: Clip.antiAlias,
-                  margin: EdgeInsets.only(top: 5, left: 5, right: 5, bottom: 3),
+                  margin: Platform.isIOS
+                      ? EdgeInsets.only(top: 5, left: 8, right: 8, bottom: 20)
+                      : EdgeInsets.only(top: 5, left: 5, right: 5, bottom: 3),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       border:

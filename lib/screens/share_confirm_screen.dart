@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -108,7 +110,9 @@ class ShareConfirmScreenState extends State<ShareConfirmScreen> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.all(5),
+                  margin: Platform.isIOS
+                      ? EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 18)
+                      : EdgeInsets.all(5),
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         fixedSize: Size(_media.width * .4, 45),
@@ -150,19 +154,3 @@ class ShareConfirmScreenState extends State<ShareConfirmScreen> {
     );
   }
 }
-//  ClipRRect(
-//                               borderRadius: BorderRadius.circular(30),
-//                               child: CircleAvatar(
-//                                 child: SizedBox(
-//                                   width: 60,
-//                                   height: 60,
-//                                   child: FadeInImage(
-//                                       fit: BoxFit.cover,
-//                                       placeholder: const AssetImage(
-//                                           'assets/images/placeHolder1.jpg'),
-//                                       image: NetworkImage(
-//                                           widget.post.profileimageurl)),
-//                                 ),
-//                                 radius: 30,
-//                               ),
-//                             ),

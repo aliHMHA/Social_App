@@ -109,13 +109,6 @@ class PostProvider with ChangeNotifier {
         'sharesrecived': FieldValue.arrayUnion([shareid])
       });
 
-      await _firestore
-          .collection('users')
-          .doc(senderid)
-          .collection('share')
-          .doc(shareid)
-          .set(share.tomap());
-
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(' Post shared successfuly')));
     } catch (err) {

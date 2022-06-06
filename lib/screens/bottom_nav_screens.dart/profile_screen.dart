@@ -120,8 +120,10 @@ class _ProfilescreenState extends State<Profilescreen> {
     final media = MediaQuery.of(context).size;
     String currentuserid = authprov.getdattttta.uid;
     return _isloadinguser
-        ? Center(
-            child: CircularProgressIndicator(color: Colors.green),
+        ? Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(color: Colors.green),
+            ),
           )
         : Scaffold(
             appBar: widget.isfromsearsh ? AppBar() : null,

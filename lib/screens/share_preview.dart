@@ -51,9 +51,11 @@ class _SharePreviewState extends State<SharePreview> {
   @override
   Widget build(BuildContext context) {
     if (_isloadinginit == true) {
-      return Center(
-        child: CircularProgressIndicator(
-          color: Colors.white,
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(
+            color: Colors.green,
+          ),
         ),
       );
     } else {
@@ -130,15 +132,31 @@ class _SharePreviewState extends State<SharePreview> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 15),
-                                            child: Text(
-                                              sharelist[ind].sendername,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20),
-                                            ),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 7.5),
+                                                child: Text(
+                                                  sharelist[ind].sendername,
+                                                  style: TextStyle(
+                                                      color: Colors.blue[400],
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 22),
+                                                ),
+                                              ),
+                                              SizedBox(),
+                                              Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 7.5),
+                                                child: Text(
+                                                  'Shared this post with you',
+                                                  style:
+                                                      TextStyle(fontSize: 15),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                           Container(
                                             padding: EdgeInsets.symmetric(
@@ -180,45 +198,3 @@ class _SharePreviewState extends State<SharePreview> {
     }
   }
 }
- // if (postslist.isEmpty) {
-      //   getpost(postidlist);
-      // }
-      //getposts
-  // List<Postinfo> postslist = [];
-  // getpost(List<String> postsidlist) async {
-  //   postslist = [];
-  //   setState(() {
-  //     _isloadingsecond = true;
-  //   });
-  //   postslist = [];
-  //   for (var element in postsidlist) {
-  //     final snap = await FirebaseFirestore.instance
-  //         .collection('posts')
-  //         .doc(element)
-  //         .get();
-  //     postslist.add(Postinfo.fromsnap(snap));
-  //   }
-  //   setState(() {
-  //     _isloadingsecond = false;
-  //   });
-  // }
-
-  // List<Sharemodel> getsharemodellist(
-  //     AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-  //   List<Sharemodel> gg = [];
-  //   for (var element in snapshot.data!.docs) {
-  //     gg.add(Sharemodel.fromsnap(element));
-  //   }
-
-  //   return gg;
-  // }
-
-
-
-   // body: _isloadingsecond
-        //     ? Center(
-        //         child: CircularProgressIndicator(
-        //           color: primaryColor,
-        //         ),
-        //       )
-        //     :
