@@ -14,16 +14,6 @@ class Authprovider with ChangeNotifier {
     _userr = value;
   }
 
-  // Future<String> getdata() async {
-  //   final String uid = FirebaseAuth.instance.currentUser!.uid;
-
-  //   var userinfo =
-  //       await FirebaseFirestore.instance.collection('users').doc(uid).get();
-  //   SocialUser gg = SocialUser.fromsnap(userinfo);
-  //   _userr = gg;
-  //   return gg.name;
-  // }
-
   Future<void> regester(
       {required BuildContext context,
       required String email,
@@ -98,56 +88,3 @@ class Authprovider with ChangeNotifier {
     }
   }
 }
-//  try {
-//       String? _profileurl;
-//       String? _coverurl;
-//       await FirebaseStorage.instance
-//           .ref()
-//           .child("users/${Uri.file(profilepic.path).pathSegments.last}")
-//           .putFile(profilepic)
-//           .then((value) {
-//         value.ref.getDownloadURL().then((value) {
-//           _profileurl = value;
-//         });
-//       });
-//       await FirebaseStorage.instance
-//           .ref()
-//           .child("users/${Uri.file(profilepic.path).pathSegments.last}")
-//           .putFile(coverimage)
-//           .then((value) {
-//         value.ref.getDownloadURL().then((value) {
-//           _coverurl = value;
-//         });
-//       });
-
-//       await FirebaseAuth.instance
-//           .createUserWithEmailAndPassword(
-//         email: email,
-//         password: password,
-//       )
-//           .then((value) {
-//         SocialUser model = SocialUser(
-//           followers: [],
-//           following: [],
-//           comments: [],
-//           posts: [],
-//           likes: [],
-//           email: email,
-//           uid: value.user!.uid,
-//           imageURL: _profileurl!,
-//           coverURL: _coverurl!,
-//           bio: bio,
-//           phone: phone,
-//           name: name,
-//         );
-
-//         FirebaseFirestore.instance
-//             .collection('users')
-//             .doc(model.uid)
-//             .set(model.tomap());
-//       });
-//     } catch (error) {
-//       print(error.toString());
-//       ScaffoldMessenger.of(context)
-//           .showSnackBar(SnackBar(content: Text(error.toString())));
-//     }
